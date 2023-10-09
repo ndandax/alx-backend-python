@@ -6,13 +6,12 @@ from typing import List
 wait_n = __import__('1-concurrent_coroutines').wait_n
 
 
-def measure_time(n: int, max_delay: float) -> float:
+async def measure_time(n: int, max_delay: int) -> float:
     """couroutine to measure time"""
     start_time = time.time()
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    tasks: List[asyncio.Task] = [wait_n(n, max_delay) for _ in range(n)]
+    await asyncio.gather(*tasks)
 
-    delays: List[float] = loop.run_until_complete(wait_n(n, max_delay))
     end_time = time.time()
     total_time = end_time - start_time
     average_time = total_time / n
