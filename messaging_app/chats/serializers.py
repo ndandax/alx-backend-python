@@ -1,6 +1,6 @@
-from rest_framework import serializers
+from rest_framework import serializers, ValidationError
 from .models import User, Conversation, Message
-from rest_framework.exceptions import ValidationError
+#from rest_framework.exceptions import ValidationError
 
 class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField()
