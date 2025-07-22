@@ -1,4 +1,4 @@
-from rest_framework import serializers, ValidationError
+from rest_framework import serializers
 from .models import User, Conversation, Message
 #from rest_framework.exceptions import ValidationError
 
@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_role(self, value):
         allowed_roles = ['guest', 'host', 'admin']
         if value not in allowed_roles:
-            raise ValidationError("Role must be one of: guest, host, admin")
+            raise serializers.ValidationError("Role must be one of: guest, host, or admin")
         return value
 
     class Meta:
