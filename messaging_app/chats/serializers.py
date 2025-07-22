@@ -60,3 +60,17 @@ class ConversationSerializer(serializers.ModelSerializer):
             'created_at'
         ]
         read_only_fields = ['conversation_id', 'created_at']
+
+
+class ConversationCreateSerializer(serializers.ModelSerializer):
+    participants = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+
+    class Meta:
+        model = Conversation
+        fields = ['participants']
+
+
+class MessageCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['conversation', 'message_body']
