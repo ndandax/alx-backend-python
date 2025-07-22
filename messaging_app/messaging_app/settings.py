@@ -43,6 +43,19 @@ INSTALLED_APPS = [
     'chats',
 ]
 
+REST_FRAMEWORK = {
+    #'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', # Add this line
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # Use JWT for authentication
+        #'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        # Only authenticated users can access endpoints by default
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
