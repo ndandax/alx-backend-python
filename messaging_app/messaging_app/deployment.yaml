@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-messaging-deployment
+  labels:
+    app: messaging_app
+spec:
+  replicas: 1   # SQLite is file-based, so stick to 1 replica to avoid file locking issues
+  selector:
+    matchLabels:
+      app: messaging_app
+  template:
+    metadata:
+      labels:
+        app: messaging_app
+    spec:
+      containers:
+        - name: django-messaging-container
+          image: ndandax/messaging_app:latest   # Replace with your image
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: sqlite-storage
+              mountPath: /app/db   # Mount point for SQLite file
+      volumes:
+        - name: sqlite-storage
+          emptyDir: {}  # Ephemeral storage (data resets if pod restarts)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-messaging-service
+spec:
+  selector:
+    app: messaging_app
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP
